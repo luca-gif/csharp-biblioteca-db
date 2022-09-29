@@ -1,4 +1,32 @@
-﻿// Creo user
+﻿using System.Data.SqlClient;
+
+string stringaDiConnessione = "Data Source=localhost;Initial Catalog=biblioteca-db;Integrated Security=True";
+
+using (SqlConnection connessioneSql = new SqlConnection(stringaDiConnessione))
+
+    try
+    {
+        connessioneSql.Open();
+        string query = $"SELECT * FROM users";
+        SqlCommand cmd = new(query, connessioneSql);
+        SqlDataReader dataReader = cmd.ExecuteReader();
+
+
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+    }
+    finally
+    {
+        connessioneSql.Close();
+    }
+
+
+
+
+
+/*// Creo user
 
 List<User> users = new List<User>();
 
@@ -66,3 +94,4 @@ else
     Console.WriteLine($"{search} non è presente, prova a cercare qualcosa di cui disponiamo.");
 }
 
+*/

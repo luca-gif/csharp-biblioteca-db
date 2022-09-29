@@ -4,6 +4,9 @@ string stringaDiConnessione = "Data Source=localhost;Initial Catalog=biblioteca-
 
 SqlConnection connessioneSql = new SqlConnection(stringaDiConnessione);
 
+//Apro la connessione con il database grazie al metodo Open
+connessioneSql.Open();
+
 //Aggiunge un libro
 
 Console.WriteLine("Vuoi aggiungere un libro o un DVD?");
@@ -37,8 +40,6 @@ if (add == "libro")
         Console.WriteLine("Inserisci pagine");
         int pages = Int32.Parse(Console.ReadLine());
 
-        //Chiamo il metodo Open
-        connessioneSql.Open();
         
         //Inserisco tutti i dati nella variabile query
         string query = "INSERT INTO books (code, title, year, genre, isAvailable, shelfNumber, author, pages) VALUES (@dato1, @dato2, @dato3, @dato4, @dato5, @dato6, @dato7, @dato8)";
@@ -61,4 +62,9 @@ if (add == "libro")
 
         Console.WriteLine(e);
 	}
+    finally
+    {
+        //Chiudo la connessione al db 
+        connessioneSql.Close();
+    }
 }

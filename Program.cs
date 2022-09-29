@@ -2,96 +2,63 @@
 
 string stringaDiConnessione = "Data Source=localhost;Initial Catalog=biblioteca-db;Integrated Security=True";
 
-using (SqlConnection connessioneSql = new SqlConnection(stringaDiConnessione))
+SqlConnection connessioneSql = new SqlConnection(stringaDiConnessione);
 
-    try
-    {
+//Aggiunge un libro
+
+Console.WriteLine("Vuoi aggiungere un libro o un DVD?");
+string add = Console.ReadLine().ToLower();
+
+if (add == "libro")
+{
+	try
+	{
+        Console.WriteLine("Inserisci codice");
+        int code = Int32.Parse(Console.ReadLine());
+
+        Console.WriteLine("Inserisci titolo");
+        string title = Console.ReadLine();
+
+        Console.WriteLine("Inserisci anno di produzione");
+        int year = Int32.Parse(Console.ReadLine());
+
+        Console.WriteLine("Inserisci il genere");
+        string genre = Console.ReadLine();
+
+        Console.WriteLine("E' disponibile?");
+        int isAvailable = Convert.ToInt32(Console.ReadLine());
+
+        Console.WriteLine("Inserisci posizione");
+        int shelfNumber = Int32.Parse(Console.ReadLine());
+
+        Console.WriteLine("Inserisci autore");
+        string author = Console.ReadLine();
+
+        Console.WriteLine("Inserisci pagine");
+        int pages = Int32.Parse(Console.ReadLine());
+
+        //Chiamo il metodo Open
         connessioneSql.Open();
-        string query = $"SELECT * FROM users";
-        SqlCommand cmd = new(query, connessioneSql);
-        SqlDataReader dataReader = cmd.ExecuteReader();
+        
+        //Inserisco tutti i dati nella variabile query
+        string query = "INSERT INTO books (code, title, year, genre, isAvailable, shelfNumber, author, pages) VALUES (@dato1, @dato2, @dato3, @dato4, @dato5, @dato6, @dato7, @dato8)";
 
+        SqlCommand cmd = new SqlCommand(query, connessioneSql);
 
+        cmd.Parameters.Add(new SqlParameter("@dato1", code));
+        cmd.Parameters.Add(new SqlParameter("@dato2", title));
+        cmd.Parameters.Add(new SqlParameter("@dato3", year));
+        cmd.Parameters.Add(new SqlParameter("@dato4", genre));
+        cmd.Parameters.Add(new SqlParameter("@dato5", isAvailable));
+        cmd.Parameters.Add(new SqlParameter("@dato6", shelfNumber));
+        cmd.Parameters.Add(new SqlParameter("@dato7", author));
+        cmd.Parameters.Add(new SqlParameter("@dato8", pages));
+
+        int affectedRows = cmd.ExecuteNonQuery();
     }
-    catch (Exception ex)
-    {
-        Console.WriteLine(ex.Message);
-    }
-    finally
-    {
-        connessioneSql.Close();
-    }
+	catch (Exception e)
+	{
 
-
-
-
-
-/*// Creo user
-
-List<User> users = new List<User>();
-
-users.Add(new User("Luca", "Rossi", "luca@rossi.com", "psw", 370554515));
-users.Add(new User("Marco", "Versi", "marco@verdi.com", "psw", 370544415));
-
-
-// Creo libri
-
-List<Book> books = new List<Book>();
-
-books.Add(new Book(005, "harry potter", 2014, "action", true, 15, "J.K. Rowland", 188));
-
-
-// Creo Dvd
-
-List<Dvd> dvd = new List<Dvd>();
-
-dvd.Add(new Dvd(005, "rambo", 2014, "action", true, 145, "rambo", 109));
-
-
-// Ricerca per titolo
-
-Console.WriteLine("Cerchi un libro o un DVD?");
-string search = Console.ReadLine().ToLower();
-
-if (search == "libro")
-{
-    Console.WriteLine("Inserisci un titolo");
-    string bookToSearch = Console.ReadLine().ToLower();
-
-    foreach (Book book in books)
-    {
-        if (book.Title == bookToSearch)
-        {
-            Console.WriteLine(book.Title);
-        }
-        else
-        {
-            Console.WriteLine("Mi dispiace ma questo libro non è presente, scegline un altro!");
-        }
-    }
+        Console.WriteLine(e);
+	}
 }
-
-else if (search == "dvd")
-{
-    Console.WriteLine("Inserisci un titolo");
-    string dvdToSearch = Console.ReadLine().ToLower();
-
-    foreach (Dvd dvdItem in dvd)
-    {
-        if (dvdItem.Title == dvdToSearch)
-        {
-            Console.WriteLine(dvdItem.Title);
-        }
-        else
-        {
-            Console.WriteLine("Mi dispiace ma questo DVD non è presente, scegline un altro!");
-        }
-    }
-}
-
-else
-{
-    Console.WriteLine($"{search} non è presente, prova a cercare qualcosa di cui disponiamo.");
-}
-
-*/
